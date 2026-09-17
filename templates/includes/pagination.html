@@ -1,0 +1,21 @@
+{% if dishes.paginator.num_pages > 1 %}
+<div class="col-12 text-center mt-5">
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if dishes.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ dishes.previous_page_number }}"><i class="fa fa-angle-double-left"></i></a></li>
+            {% endif %}
+            {% for num in dishes.paginator.page_range %}
+                {% if dishes.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if dishes.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ dishes.next_page_number }}"><i class="fa fa-angle-double-right"></i></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}

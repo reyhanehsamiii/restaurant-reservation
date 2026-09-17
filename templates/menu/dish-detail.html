@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load menu_tags %}
+
+{% block title %}{{ dish.title }}{% endblock %}
+
+{% block hero %}
+    {% include 'includes/page-header.html' with page_title=dish.title %}
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <img class="img-fluid rounded w-100" src="{{ dish.image.url }}" alt="{{ dish.title }}">
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <h5 class="section-title ff-secondary text-start text-primary fw-normal">{{ dish.category.name }}</h5>
+                <h1 class="mb-3">{{ dish.title }}</h1>
+                <h3 class="text-primary mb-4">{{ dish.price|price_tag }}</h3>
+                <div class="mb-4">{{ dish.description|safe }}</div>
+                <p class="mb-2"><b>وعده:</b> {{ dish.get_meal_display }}</p>
+                {% if dish.tag.all %}
+                <p class="mb-4">
+                    <b>برچسب‌ها:</b>
+                    {% for t in dish.tag.all %}
+                        <a href="{% url 'menu:tag' t.name %}" class="badge bg-secondary text-decoration-none">{{ t.name }}</a>
+                    {% endfor %}
+                </p>
+                {% endif %}
+                <a href="{% url 'reservation:booking' %}" class="btn btn-primary py-3 px-5">Book A Table</a>
+            </div>
+        </div>
+
+        {% if related %}
+        <div class="mt-5">
+            <h3 class="mb-4">غذاهای مشابه</h3>
+            <div class="row g-4">
+                {% for item in related %}
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid rounded" src="{{ item.image.url }}"
+                             style="width: 80px; height: 80px; object-fit: cover;" alt="{{ item.title }}">
+                        <div class="w-100 d-flex flex-column text-start ps-4">
+                            <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                <span><a href="{{ item.get_absolute_url }}" class="text-dark text-decoration-none">{{ item.title }}</a></span>
+                                <span class="text-primary">{{ item.price|price_tag }}</span>
+                            </h5>
+                            <small class="fst-italic">{{ item.description|striptags|truncatewords:10 }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

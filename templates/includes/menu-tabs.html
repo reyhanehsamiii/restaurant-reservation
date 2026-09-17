@@ -1,0 +1,49 @@
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Menu</h5>
+            <h1 class="mb-5">Most Popular Items</h1>
+        </div>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                {% for item in tabs %}
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 {% if forloop.first %}ms-0{% endif %} {% if forloop.last %}me-0{% endif %} pb-3 {% if forloop.first %}active{% endif %}"
+                       data-bs-toggle="pill" href="#tab-{{ forloop.counter }}">
+                        <i class="fa {{ item.category.icon }} fa-2x text-primary"></i>
+                        <div class="ps-3">
+                            <small class="text-body">{{ item.category.label }}</small>
+                            <h6 class="mt-n1 mb-0">{{ item.category.name }}</h6>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content">
+                {% for item in tabs %}
+                <div id="tab-{{ forloop.counter }}" class="tab-pane fade show p-0 {% if forloop.first %}active{% endif %}">
+                    <div class="row g-4">
+                        {% for dish in item.dishes %}
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center">
+                                <img class="flex-shrink-0 img-fluid rounded" src="{{ dish.image.url }}"
+                                     alt="{{ dish.title }}" style="width: 80px; height: 80px; object-fit: cover;">
+                                <div class="w-100 d-flex flex-column text-start ps-4">
+                                    <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                        <span><a href="{{ dish.get_absolute_url }}" class="text-dark text-decoration-none">{{ dish.title }}</a></span>
+                                        <span class="text-primary">${{ dish.price|floatformat:0 }}</span>
+                                    </h5>
+                                    <small class="fst-italic">{{ dish.description|striptags|truncatewords:10 }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-muted">غذایی در این دسته ثبت نشده است.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

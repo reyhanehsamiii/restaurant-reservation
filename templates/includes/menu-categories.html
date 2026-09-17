@@ -1,0 +1,24 @@
+<ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+    <li class="nav-item">
+        <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 {% if not active_filter %}active{% endif %}"
+           href="{% url 'menu:menu' %}">
+            <i class="fa fa-utensils fa-2x text-primary"></i>
+            <div class="ps-3">
+                <small class="text-body">All</small>
+                <h6 class="mt-n1 mb-0">همه غذاها</h6>
+            </div>
+        </a>
+    </li>
+    {% for cat in categories %}
+    <li class="nav-item">
+        <a class="d-flex align-items-center text-start mx-3 {% if forloop.last %}me-0{% endif %} pb-3 {% if active_filter == cat.name %}active{% endif %}"
+           href="{{ cat.get_absolute_url }}">
+            <i class="fa {{ cat.icon }} fa-2x text-primary"></i>
+            <div class="ps-3">
+                <small class="text-body">{{ cat.label }}</small>
+                <h6 class="mt-n1 mb-0">{{ cat.name }} ({{ cat.dish_count }})</h6>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>

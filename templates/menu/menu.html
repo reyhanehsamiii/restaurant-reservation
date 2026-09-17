@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load menu_tags %}
+
+{% block title %}{{ site.brand }} - Menu{% endblock %}
+
+{% block hero %}
+    {% include 'includes/page-header.html' with page_title='Food Menu' %}
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Food Menu</h5>
+            <h1 class="mb-5">
+                {% if search_term %}نتیجه جستجو برای «{{ search_term }}»
+                {% elif active_filter %}{{ active_filter }}
+                {% else %}Most Popular Items{% endif %}
+            </h1>
+        </div>
+
+        <!-- جستجو -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-5">
+                <form method="get" action="{% url 'menu:search' %}" class="d-flex">
+                    <input type="text" name="s" class="form-control me-2" placeholder="جستجوی غذا..."
+                           value="{{ search_term|default:'' }}">
+                    <button class="btn btn-primary px-4" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+            {% include 'includes/menu-categories.html' %}
+
+            <div class="row g-4">
+                {% for dish in dishes %}
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid rounded" src="{{ dish.image.url }}"
+                             alt="{{ dish.title }}" style="width: 80px; height: 80px; object-fit: cover;">
+                        <div class="w-100 d-flex flex-column text-start ps-4">
+                            <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                <span>
+                                    <a href="{{ dish.get_absolute_url }}" class="text-dark text-decoration-none">{{ dish.title }}</a>
+                                    {% if dish.is_special %}<span class="badge bg-primary ms-2">ویژه</span>{% endif %}
+                                </span>
+                                <span class="text-primary">{{ dish.price|price_tag }}</span>
+                            </h5>
+                            <small class="fst-italic">{{ dish.description|striptags|truncatewords:12 }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center text-muted py-5">
+                    <i class="fa fa-utensils fa-3x mb-3 d-block text-primary"></i>
+                    غذایی پیدا نشد.
+                </div>
+                {% endfor %}
+
+                {% include 'includes/pagination.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

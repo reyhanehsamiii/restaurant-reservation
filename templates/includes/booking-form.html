@@ -1,0 +1,64 @@
+{% comment %} فرم رزرو — هم در صفحه اصلی و هم در صفحه booking استفاده می‌شود {% endcomment %}
+<form method="post" action="{% url 'reservation:booking' %}" novalidate>
+    {% csrf_token %}
+    {% include 'includes/form-errors.html' %}
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="form-floating">
+                {{ forms.name }}
+                <label for="{{ forms.name.id_for_label }}">Your Name</label>
+            </div>
+            {% for e in forms.name.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                {{ forms.email }}
+                <label for="{{ forms.email.id_for_label }}">Your Email</label>
+            </div>
+            {% for e in forms.email.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                {{ forms.phone }}
+                <label for="{{ forms.phone.id_for_label }}">Phone</label>
+            </div>
+            {% for e in forms.phone.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                {{ forms.date }}
+                <label for="{{ forms.date.id_for_label }}">Date</label>
+            </div>
+            {% for e in forms.date.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                {{ forms.time }}
+                <label for="{{ forms.time.id_for_label }}">Time</label>
+            </div>
+            {% for e in forms.time.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                {{ forms.guests }}
+                <label for="{{ forms.guests.id_for_label }}">No Of People</label>
+            </div>
+            {% for e in forms.guests.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+        </div>
+        <div class="col-12">
+            <div class="form-floating">
+                {{ forms.special_request }}
+                <label for="{{ forms.special_request.id_for_label }}">Special Request</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="d-flex align-items-center bg-white rounded p-2">
+                {{ forms.captcha }}
+            </div>
+            {% for e in forms.captcha.errors %}<small class="text-danger">{{ e }}</small>{% endfor %}
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary w-100 py-3" type="submit">Book Now</button>
+        </div>
+    </div>
+</form>

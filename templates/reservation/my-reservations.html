@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}رزروهای من{% endblock %}
+
+{% block hero %}
+    {% include 'includes/page-header.html' with page_title='My Reservations' %}
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <h5 class="section-title ff-secondary text-start text-primary fw-normal">Reservations</h5>
+        <h1 class="mb-5">رزروهای پیش رو</h1>
+
+        <div class="table-responsive mb-5">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>تاریخ</th><th>ساعت</th><th>نفرات</th><th>میز</th><th>وضعیت</th><th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for r in upcoming %}
+                    <tr>
+                        <td>{{ r.date }}</td>
+                        <td>{{ r.time }}</td>
+                        <td>{{ r.guests }}</td>
+                        <td>{% if r.table %}میز {{ r.table.number }}{% else %}-{% endif %}</td>
+                        <td>
+                            {% if r.status == 'confirmed' %}<span class="badge bg-success">{{ r.get_status_display }}</span>
+                            {% elif r.status == 'pending' %}<span class="badge bg-warning text-dark">{{ r.get_status_display }}</span>
+                            {% elif r.status == 'rejected' %}<span class="badge bg-danger">{{ r.get_status_display }}</span>
+                            {% else %}<span class="badge bg-secondary">{{ r.get_status_display }}</span>{% endif %}
+                        </td>
+                        <td>
+                            {% if r.is_editable %}
+                            <form method="post" action="{% url 'reservation:cancel' r.pk %}"
+                                  onsubmit="return confirm('این رزرو لغو شود؟');">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-danger">لغو</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="6" class="text-center text-muted py-4">
+                        رزرو فعالی ندارید. <a href="{% url 'reservation:booking' %}">همین حالا میز رزرو کنید</a>.
+                    </td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if past %}
+        <h1 class="mb-4">رزروهای گذشته</h1>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr><th>تاریخ</th><th>ساعت</th><th>نفرات</th><th>میز</th><th>وضعیت</th></tr>
+                </thead>
+                <tbody>
+                {% for r in past %}
+                    <tr class="text-muted">
+                        <td>{{ r.date }}</td>
+                        <td>{{ r.time }}</td>
+                        <td>{{ r.guests }}</td>
+                        <td>{% if r.table %}میز {{ r.table.number }}{% else %}-{% endif %}</td>
+                        <td>{{ r.get_status_display }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

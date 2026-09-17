@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ site.brand }} - Our Team{% endblock %}
+
+{% block hero %}
+    {% include 'includes/page-header.html' with page_title='Our Team' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'includes/team.html' %}
+{% endblock %}

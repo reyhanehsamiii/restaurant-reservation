@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ site.brand }} - Service{% endblock %}
+
+{% block hero %}
+    {% include 'includes/page-header.html' with page_title='Service' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'includes/service.html' %}
+{% endblock %}
