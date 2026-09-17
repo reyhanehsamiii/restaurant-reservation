@@ -1,0 +1,11 @@
+# Django
+db.sqlite3
+staticfiles/
+media/*
+!media/menu/
+!media/team/
+!media/testimonial/
+*.log
+
+# VSCode
+.vscode/
